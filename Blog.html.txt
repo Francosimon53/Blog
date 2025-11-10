@@ -112,10 +112,26 @@
                 <p>Descubre cómo una dieta equilibrada puede ayudar a mantener tu microbiota en óptimas condiciones...</p>
                 <a href="#">Leer más</a>
             </article>
+            <article class="blog-post">
+                <h3>Cómo transformar un modelo financiero en un SaaS exitoso</h3>
+                <p>Exploramos un conjunto de prompts y lineamientos que permiten convertir un modelo financiero complejo, como el de Port Hamilton Refinery, en una plataforma SaaS accesible y escalable.</p>
+                <a href="#prompt-saas">Leer más</a>
+            </article>
         </section>
         <section id="about">
             <h2>Sobre Mí</h2>
             <p>Soy Simón Franco, psicólogo y analista de conducta especializado en nutrición y microbiota. Me apasiona explorar la relación entre la salud física, mental y los avances en medicina funcional. Este blog es un espacio para compartir ideas y aprender juntos.</p>
+        </section>
+        <section id="prompt-saas">
+            <h2>Guía para crear un SaaS financiero</h2>
+            <p>Si estás buscando convertir un modelo financiero detallado en una plataforma SaaS rentable, estos prompts pueden ayudarte a alinear a tu equipo y acelerar la implementación.</p>
+            <h3>1. Diseño del producto SaaS</h3>
+            <p>Define un objetivo claro: facilitar la creación y análisis de modelos financieros industriales sin necesidad de expertos. Incluye módulos para ingresos, COGS, salarios, OPEX, CAPEX, estados financieros automatizados, fuentes y usos, dashboards interactivos y planes de suscripción.</p>
+            <h3>2. Experiencia de usuario inspirada en Notion</h3>
+            <p>Solicita a tu equipo de diseño una interfaz minimalista y modular, con estados vacíos accionables, onboarding integrado, visualizaciones simples y funciones de colaboración. Asegúrate de contemplar personalización por rol, accesibilidad y escalabilidad del sistema de componentes.</p>
+            <h3>3. Integración técnica y motor de IA</h3>
+            <p>Pide a tu equipo full-stack que conecte los widgets del nuevo diseño con el backend existente, exponga las APIs necesarias y active un motor de IA que personalice dashboards, genere recomendaciones y aprenda de los hábitos del usuario. No olvides planificar pruebas exhaustivas y un despliegue gradual.</p>
+            <p>Con estos lineamientos podrás transformar tu modelo financiero en un servicio digital que genere valor continuo y suscripciones recurrentes.</p>
         </section>
         <section id="contact">
             <h2>Contacto</h2>
