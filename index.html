@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChismesApp - La Red Social de Chismes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .user-section {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .user-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: border 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .current-user {
+            text-align: center;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .current-user strong {
+            color: #667eea;
+        }
+
+        .post-form {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .post-form h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 100px;
+            margin-bottom: 15px;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-options {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        select {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .anonymous-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .feed {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .gossip-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .gossip-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .gossip-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+
+        .gossip-user {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.1em;
+        }
+
+        .gossip-category {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+
+        .gossip-content {
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-size: 1.05em;
+        }
+
+        .gossip-meta {
+            color: #999;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+
+        .gossip-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+            padding-top: 15px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .reaction-btn {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.95em;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .reaction-btn:hover {
+            background: #e9ecef;
+            transform: scale(1.05);
+        }
+
+        .reaction-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .truth-meter {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .truth-btn {
+            flex: 1;
+            padding: 8px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.9em;
+            background: white;
+            transition: all 0.2s;
+        }
+
+        .truth-btn.truth {
+            border-color: #28a745;
+        }
+
+        .truth-btn.truth:hover, .truth-btn.truth.active {
+            background: #28a745;
+            color: white;
+        }
+
+        .truth-btn.lie {
+            border-color: #dc3545;
+        }
+
+        .truth-btn.lie:hover, .truth-btn.lie.active {
+            background: #dc3545;
+            color: white;
+        }
+
+        .comments-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .comments-toggle {
+            color: #667eea;
+            cursor: pointer;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .comments-toggle:hover {
+            text-decoration: underline;
+        }
+
+        .comments-list {
+            display: none;
+            margin-top: 15px;
+        }
+
+        .comments-list.show {
+            display: block;
+        }
+
+        .comment {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .comment-user {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 0.9em;
+        }
+
+        .comment-text {
+            color: #333;
+            margin-top: 5px;
+            font-size: 0.95em;
+        }
+
+        .comment-form {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .comment-input {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 0.9em;
+        }
+
+        .comment-btn {
+            padding: 10px 20px;
+            font-size: 0.9em;
+        }
+
+        .stats {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .form-options {
+                flex-direction: column;
+            }
+
+            .gossip-actions {
+                flex-direction: column;
+            }
+
+            .reaction-btn, .truth-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        .empty-state {
+            background: white;
+            border-radius: 15px;
+            padding: 50px 25px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .empty-state h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔥 ChismesApp</h1>
+            <p class="subtitle">La red social donde los chismes vuelan</p>
+        </header>
+
+        <div class="user-section">
+            <div class="user-input">
+                <input type="text" id="usernameInput" placeholder="Ingresa tu nombre de usuario...">
+                <button onclick="setUsername()">Establecer Usuario</button>
+            </div>
+            <div class="current-user">
+                Usuario actual: <strong id="currentUsername">Anónimo</strong>
+            </div>
+        </div>
+
+        <div class="post-form">
+            <h2>✍️ Comparte un chisme</h2>
+            <textarea id="gossipContent" placeholder="¿Qué chisme tienes hoy? Compártelo aquí..."></textarea>
+            <div class="form-options">
+                <select id="categorySelect">
+                    <option value="Amor">💕 Amor</option>
+                    <option value="Trabajo">💼 Trabajo</option>
+                    <option value="Familia">👨‍👩‍👧‍👦 Familia</option>
+                    <option value="Escuela">📚 Escuela</option>
+                    <option value="Celebridades">⭐ Celebridades</option>
+                    <option value="Otros">🎭 Otros</option>
+                </select>
+                <div class="anonymous-toggle">
+                    <input type="checkbox" id="anonymousCheck">
+                    <label for="anonymousCheck">Publicar como anónimo</label>
+                </div>
+            </div>
+            <button onclick="postGossip()">🚀 Publicar Chisme</button>
+        </div>
+
+        <div id="feed" class="feed"></div>
+    </div>
+
+    <script>
+        let currentUser = localStorage.getItem('username') || 'Anónimo';
+        let gossips = JSON.parse(localStorage.getItem('gossips')) || [];
+        let gossipIdCounter = parseInt(localStorage.getItem('gossipIdCounter')) || 0;
+
+        // Initialize
+        document.getElementById('currentUsername').textContent = currentUser;
+        renderFeed();
+
+        function setUsername() {
+            const input = document.getElementById('usernameInput');
+            const username = input.value.trim();
+
+            if (username) {
+                currentUser = username;
+                localStorage.setItem('username', username);
+                document.getElementById('currentUsername').textContent = username;
+                input.value = '';
+            } else {
+                alert('Por favor ingresa un nombre de usuario válido');
+            }
+        }
+
+        function postGossip() {
+            const content = document.getElementById('gossipContent').value.trim();
+            const category = document.getElementById('categorySelect').value;
+            const isAnonymous = document.getElementById('anonymousCheck').checked;
+
+            if (!content) {
+                alert('Por favor escribe algo antes de publicar');
+                return;
+            }
+
+            const gossip = {
+                id: gossipIdCounter++,
+                content: content,
+                user: isAnonymous ? 'Anónimo' : currentUser,
+                category: category,
+                timestamp: new Date().toISOString(),
+                reactions: {
+                    fire: 0,
+                    shocked: 0,
+                    laugh: 0
+                },
+                userReactions: {},
+                truthVotes: {
+                    truth: 0,
+                    lie: 0
+                },
+                userTruthVotes: {},
+                comments: [],
+                views: 0
+            };
+
+            gossips.unshift(gossip);
+            localStorage.setItem('gossips', JSON.stringify(gossips));
+            localStorage.setItem('gossipIdCounter', gossipIdCounter);
+
+            document.getElementById('gossipContent').value = '';
+            document.getElementById('anonymousCheck').checked = false;
+
+            renderFeed();
+        }
+
+        function renderFeed() {
+            const feed = document.getElementById('feed');
+
+            if (gossips.length === 0) {
+                feed.innerHTML = `
+                    <div class="empty-state">
+                        <h3>¡No hay chismes todavía!</h3>
+                        <p>Sé el primero en compartir un chisme jugoso</p>
+                    </div>
+                `;
+                return;
+            }
+
+            feed.innerHTML = gossips.map(gossip => {
+                const timeAgo = getTimeAgo(new Date(gossip.timestamp));
+                const userReaction = gossip.userReactions[currentUser] || null;
+                const userTruthVote = gossip.userTruthVotes[currentUser] || null;
+
+                return `
+                    <div class="gossip-card">
+                        <div class="gossip-header">
+                            <span class="gossip-user">${gossip.user}</span>
+                            <span class="gossip-category">${gossip.category}</span>
+                        </div>
+                        <div class="gossip-content">${gossip.content}</div>
+                        <div class="gossip-meta">Publicado ${timeAgo}</div>
+
+                        <div class="stats">
+                            <div class="stat-item">👁️ ${gossip.views} vistas</div>
+                            <div class="stat-item">💬 ${gossip.comments.length} comentarios</div>
+                        </div>
+
+                        <div class="gossip-actions">
+                            <button class="reaction-btn ${userReaction === 'fire' ? 'active' : ''}"
+                                    onclick="toggleReaction(${gossip.id}, 'fire')">
+                                🔥 Caliente (${gossip.reactions.fire})
+                            </button>
+                            <button class="reaction-btn ${userReaction === 'shocked' ? 'active' : ''}"
+                                    onclick="toggleReaction(${gossip.id}, 'shocked')">
+                                😱 Escandaloso (${gossip.reactions.shocked})
+                            </button>
+                            <button class="reaction-btn ${userReaction === 'laugh' ? 'active' : ''}"
+                                    onclick="toggleReaction(${gossip.id}, 'laugh')">
+                                😂 Gracioso (${gossip.reactions.laugh})
+                            </button>
+                        </div>
+
+                        <div class="truth-meter">
+                            <button class="truth-btn truth ${userTruthVote === 'truth' ? 'active' : ''}"
+                                    onclick="voteTruth(${gossip.id}, 'truth')">
+                                ✅ Verdad (${gossip.truthVotes.truth})
+                            </button>
+                            <button class="truth-btn lie ${userTruthVote === 'lie' ? 'active' : ''}"
+                                    onclick="voteTruth(${gossip.id}, 'lie')">
+                                ❌ Mentira (${gossip.truthVotes.lie})
+                            </button>
+                        </div>
+
+                        <div class="comments-section">
+                            <span class="comments-toggle" onclick="toggleComments(${gossip.id})">
+                                💬 Ver comentarios (${gossip.comments.length})
+                            </span>
+                            <div class="comments-list" id="comments-${gossip.id}">
+                                ${gossip.comments.map(comment => `
+                                    <div class="comment">
+                                        <div class="comment-user">${comment.user}</div>
+                                        <div class="comment-text">${comment.text}</div>
+                                    </div>
+                                `).join('')}
+                                <div class="comment-form">
+                                    <input type="text" class="comment-input" id="comment-input-${gossip.id}"
+                                           placeholder="Escribe un comentario...">
+                                    <button class="comment-btn" onclick="addComment(${gossip.id})">Comentar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Increment views
+            gossips.forEach(g => g.views++);
+            saveGossips();
+        }
+
+        function toggleReaction(gossipId, reactionType) {
+            const gossip = gossips.find(g => g.id === gossipId);
+            const currentReaction = gossip.userReactions[currentUser];
+
+            if (currentReaction === reactionType) {
+                gossip.reactions[reactionType]--;
+                delete gossip.userReactions[currentUser];
+            } else {
+                if (currentReaction) {
+                    gossip.reactions[currentReaction]--;
+                }
+                gossip.reactions[reactionType]++;
+                gossip.userReactions[currentUser] = reactionType;
+            }
+
+            saveGossips();
+            renderFeed();
+        }
+
+        function voteTruth(gossipId, voteType) {
+            const gossip = gossips.find(g => g.id === gossipId);
+            const currentVote = gossip.userTruthVotes[currentUser];
+
+            if (currentVote === voteType) {
+                gossip.truthVotes[voteType]--;
+                delete gossip.userTruthVotes[currentUser];
+            } else {
+                if (currentVote) {
+                    gossip.truthVotes[currentVote]--;
+                }
+                gossip.truthVotes[voteType]++;
+                gossip.userTruthVotes[currentUser] = voteType;
+            }
+
+            saveGossips();
+            renderFeed();
+        }
+
+        function toggleComments(gossipId) {
+            const commentsDiv = document.getElementById(`comments-${gossipId}`);
+            commentsDiv.classList.toggle('show');
+        }
+
+        function addComment(gossipId) {
+            const input = document.getElementById(`comment-input-${gossipId}`);
+            const text = input.value.trim();
+
+            if (!text) {
+                alert('Por favor escribe un comentario');
+                return;
+            }
+
+            const gossip = gossips.find(g => g.id === gossipId);
+            gossip.comments.push({
+                user: currentUser,
+                text: text,
+                timestamp: new Date().toISOString()
+            });
+
+            input.value = '';
+            saveGossips();
+            renderFeed();
+
+            // Keep comments open
+            setTimeout(() => {
+                document.getElementById(`comments-${gossipId}`).classList.add('show');
+            }, 0);
+        }
+
+        function saveGossips() {
+            localStorage.setItem('gossips', JSON.stringify(gossips));
+        }
+
+        function getTimeAgo(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+
+            if (seconds < 60) return 'hace un momento';
+            if (seconds < 3600) return `hace ${Math.floor(seconds / 60)} minutos`;
+            if (seconds < 86400) return `hace ${Math.floor(seconds / 3600)} horas`;
+            return `hace ${Math.floor(seconds / 86400)} días`;
+        }
+
+        // Allow Enter key to submit
+        document.getElementById('usernameInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') setUsername();
+        });
+
+        document.getElementById('gossipContent').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && e.ctrlKey) postGossip();
+        });
+    </script>
+</body>
+</html>
