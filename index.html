@@ -5,6 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChismesApp - La Red Social de Chismes</title>
     <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --bg-gradient-start: #667eea;
+            --bg-gradient-end: #764ba2;
+            --card-bg: white;
+            --text-color: #333;
+            --text-secondary: #666;
+            --text-muted: #999;
+            --border-color: #e0e0e0;
+            --hover-bg: #f8f9fa;
+        }
+
+        body.dark-mode {
+            --card-bg: #2d3748;
+            --text-color: #e2e8f0;
+            --text-secondary: #cbd5e0;
+            --text-muted: #a0aec0;
+            --border-color: #4a5568;
+            --hover-bg: #1a202c;
+        }
+
+        body.theme-sunset {
+            --bg-gradient-start: #ff6b6b;
+            --bg-gradient-end: #feca57;
+        }
+
+        body.theme-ocean {
+            --bg-gradient-start: #00d2ff;
+            --bg-gradient-end: #3a7bd5;
+        }
+
+        body.theme-forest {
+            --bg-gradient-start: #11998e;
+            --bg-gradient-end: #38ef7d;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,38 +50,99 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
             min-height: 100vh;
             padding: 20px;
+            transition: all 0.3s ease;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
         header {
-            background: white;
+            background: var(--card-bg);
             border-radius: 20px;
             padding: 30px;
             margin-bottom: 30px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             text-align: center;
+            position: relative;
         }
 
         h1 {
-            color: #667eea;
+            color: var(--primary-color);
             font-size: 2.5em;
             margin-bottom: 10px;
         }
 
         .subtitle {
-            color: #666;
+            color: var(--text-secondary);
             font-size: 1.1em;
         }
 
+        .header-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .icon-btn {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            transition: all 0.2s;
+        }
+
+        .icon-btn:hover {
+            transform: scale(1.1);
+            background: var(--hover-bg);
+        }
+
+        .nav-tabs {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+        }
+
+        .nav-tab {
+            padding: 12px 20px;
+            border: none;
+            background: transparent;
+            color: var(--text-color);
+            cursor: pointer;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .nav-tab:hover {
+            background: var(--hover-bg);
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
         .user-section {
-            background: white;
+            background: var(--card-bg);
             border-radius: 15px;
             padding: 20px;
             margin-bottom: 20px;
@@ -57,23 +155,25 @@
             margin-bottom: 10px;
         }
 
-        input[type="text"] {
+        input[type="text"], input[type="search"] {
             flex: 1;
             padding: 12px;
-            border: 2px solid #e0e0e0;
+            border: 2px solid var(--border-color);
             border-radius: 10px;
             font-size: 1em;
             transition: border 0.3s;
+            background: var(--card-bg);
+            color: var(--text-color);
         }
 
-        input[type="text"]:focus {
+        input[type="text"]:focus, input[type="search"]:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: var(--primary-color);
         }
 
         button {
             padding: 12px 25px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
             border: none;
             border-radius: 10px;
@@ -94,16 +194,86 @@
 
         .current-user {
             text-align: center;
-            color: #666;
+            color: var(--text-secondary);
             margin-top: 10px;
         }
 
         .current-user strong {
-            color: #667eea;
+            color: var(--primary-color);
+        }
+
+        .user-stats {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid var(--border-color);
+        }
+
+        .user-stat {
+            text-align: center;
+        }
+
+        .user-stat-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .user-stat-label {
+            font-size: 0.85em;
+            color: var(--text-muted);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #333;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin: 5px;
+        }
+
+        .search-filter-section {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .search-box {
+            margin-bottom: 15px;
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        select {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            background: var(--card-bg);
+            color: var(--text-color);
+        }
+
+        select:focus {
+            outline: none;
+            border-color: var(--primary-color);
         }
 
         .post-form {
-            background: white;
+            background: var(--card-bg);
             border-radius: 15px;
             padding: 25px;
             margin-bottom: 30px;
@@ -111,25 +281,27 @@
         }
 
         .post-form h2 {
-            color: #667eea;
+            color: var(--primary-color);
             margin-bottom: 20px;
         }
 
         textarea {
             width: 100%;
             padding: 15px;
-            border: 2px solid #e0e0e0;
+            border: 2px solid var(--border-color);
             border-radius: 10px;
             font-size: 1em;
             font-family: inherit;
             resize: vertical;
             min-height: 100px;
             margin-bottom: 15px;
+            background: var(--card-bg);
+            color: var(--text-color);
         }
 
         textarea:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: var(--primary-color);
         }
 
         .form-options {
@@ -137,20 +309,6 @@
             gap: 15px;
             flex-wrap: wrap;
             margin-bottom: 15px;
-        }
-
-        select {
-            flex: 1;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 1em;
-            cursor: pointer;
-        }
-
-        select:focus {
-            outline: none;
-            border-color: #667eea;
         }
 
         .anonymous-toggle {
@@ -165,6 +323,26 @@
             cursor: pointer;
         }
 
+        .emoji-picker {
+            display: inline-flex;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+
+        .emoji-btn {
+            padding: 5px 10px;
+            background: var(--hover-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: transform 0.2s;
+        }
+
+        .emoji-btn:hover {
+            transform: scale(1.2);
+        }
+
         .feed {
             display: flex;
             flex-direction: column;
@@ -172,16 +350,37 @@
         }
 
         .gossip-card {
-            background: white;
+            background: var(--card-bg);
             border-radius: 15px;
             padding: 25px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
         }
 
         .gossip-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .gossip-card.trending {
+            border: 3px solid #ffd700;
+        }
+
+        .gossip-card.favorited {
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .trending-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #333;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
         }
 
         .gossip-header {
@@ -193,12 +392,17 @@
 
         .gossip-user {
             font-weight: bold;
-            color: #667eea;
+            color: var(--primary-color);
             font-size: 1.1em;
+            cursor: pointer;
+        }
+
+        .gossip-user:hover {
+            text-decoration: underline;
         }
 
         .gossip-category {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
             padding: 5px 15px;
             border-radius: 20px;
@@ -207,14 +411,37 @@
         }
 
         .gossip-content {
-            color: #333;
+            color: var(--text-color);
             line-height: 1.6;
             margin-bottom: 15px;
             font-size: 1.05em;
+            word-wrap: break-word;
+        }
+
+        .gossip-hashtags {
+            margin-bottom: 15px;
+        }
+
+        .hashtag {
+            display: inline-block;
+            color: var(--primary-color);
+            margin-right: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .hashtag:hover {
+            text-decoration: underline;
+        }
+
+        .gossip-gif {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-bottom: 15px;
         }
 
         .gossip-meta {
-            color: #999;
+            color: var(--text-muted);
             font-size: 0.9em;
             margin-bottom: 15px;
         }
@@ -225,12 +452,37 @@
             flex-wrap: wrap;
             margin-bottom: 15px;
             padding-top: 15px;
-            border-top: 2px solid #f0f0f0;
+            border-top: 2px solid var(--border-color);
+        }
+
+        .action-btn {
+            background: var(--hover-bg);
+            border: 2px solid var(--border-color);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--text-color);
+        }
+
+        .action-btn:hover {
+            background: var(--border-color);
+            transform: scale(1.05);
+        }
+
+        .action-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
         }
 
         .reaction-btn {
-            background: #f8f9fa;
-            border: 2px solid #e0e0e0;
+            background: var(--hover-bg);
+            border: 2px solid var(--border-color);
             padding: 8px 15px;
             border-radius: 20px;
             cursor: pointer;
@@ -239,17 +491,18 @@
             display: flex;
             align-items: center;
             gap: 5px;
+            color: var(--text-color);
         }
 
         .reaction-btn:hover {
-            background: #e9ecef;
+            background: var(--border-color);
             transform: scale(1.05);
         }
 
         .reaction-btn.active {
-            background: #667eea;
+            background: var(--primary-color);
             color: white;
-            border-color: #667eea;
+            border-color: var(--primary-color);
         }
 
         .truth-meter {
@@ -261,12 +514,13 @@
         .truth-btn {
             flex: 1;
             padding: 8px 15px;
-            border: 2px solid #e0e0e0;
+            border: 2px solid var(--border-color);
             border-radius: 10px;
             cursor: pointer;
             font-size: 0.9em;
-            background: white;
+            background: var(--card-bg);
             transition: all 0.2s;
+            color: var(--text-color);
         }
 
         .truth-btn.truth {
@@ -290,11 +544,11 @@
         .comments-section {
             margin-top: 20px;
             padding-top: 20px;
-            border-top: 2px solid #f0f0f0;
+            border-top: 2px solid var(--border-color);
         }
 
         .comments-toggle {
-            color: #667eea;
+            color: var(--primary-color);
             cursor: pointer;
             font-weight: bold;
             margin-bottom: 15px;
@@ -315,7 +569,7 @@
         }
 
         .comment {
-            background: #f8f9fa;
+            background: var(--hover-bg);
             padding: 12px;
             border-radius: 10px;
             margin-bottom: 10px;
@@ -323,12 +577,12 @@
 
         .comment-user {
             font-weight: bold;
-            color: #667eea;
+            color: var(--primary-color);
             font-size: 0.9em;
         }
 
         .comment-text {
-            color: #333;
+            color: var(--text-color);
             margin-top: 5px;
             font-size: 0.95em;
         }
@@ -342,9 +596,11 @@
         .comment-input {
             flex: 1;
             padding: 10px;
-            border: 2px solid #e0e0e0;
+            border: 2px solid var(--border-color);
             border-radius: 10px;
             font-size: 0.9em;
+            background: var(--card-bg);
+            color: var(--text-color);
         }
 
         .comment-btn {
@@ -357,7 +613,7 @@
             gap: 15px;
             margin-top: 10px;
             font-size: 0.9em;
-            color: #666;
+            color: var(--text-secondary);
         }
 
         .stat-item {
@@ -366,27 +622,250 @@
             gap: 5px;
         }
 
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 1.8em;
-            }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
 
-            .form-options {
-                flex-direction: column;
-            }
+        .modal.show {
+            display: flex;
+        }
 
-            .gossip-actions {
-                flex-direction: column;
-            }
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
 
-            .reaction-btn, .truth-btn {
-                width: 100%;
-                justify-content: center;
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            color: var(--primary-color);
+            font-size: 1.8em;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 2em;
+            cursor: pointer;
+            color: var(--text-muted);
+            padding: 0;
+            width: 40px;
+            height: 40px;
+        }
+
+        .close-btn:hover {
+            color: var(--text-color);
+        }
+
+        .profile-section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            margin: 0 auto 20px;
+            color: white;
+        }
+
+        .profile-username {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--text-color);
+            margin-bottom: 10px;
+        }
+
+        .profile-badges {
+            margin: 20px 0;
+        }
+
+        .follow-btn {
+            padding: 10px 30px;
+            font-size: 1em;
+            margin-top: 10px;
+        }
+
+        .settings-grid {
+            display: grid;
+            gap: 15px;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: var(--hover-bg);
+            border-radius: 10px;
+        }
+
+        .setting-label {
+            color: var(--text-color);
+            font-weight: bold;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--border-color);
+            transition: 0.4s;
+            border-radius: 30px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+
+        .leaderboard {
+            list-style: none;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: var(--hover-bg);
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .leaderboard-rank {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--primary-color);
+            width: 40px;
+        }
+
+        .leaderboard-user {
+            flex: 1;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        .leaderboard-score {
+            font-size: 1.2em;
+            color: var(--text-secondary);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 2000;
+            display: none;
+            min-width: 250px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .notification.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
             }
         }
 
+        .notification-text {
+            color: var(--text-color);
+            font-weight: bold;
+        }
+
+        .notifications-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .notification-item {
+            padding: 15px;
+            background: var(--hover-bg);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .notification-item:hover {
+            transform: translateX(5px);
+        }
+
+        .notification-item.unread {
+            border-left: 4px solid var(--primary-color);
+        }
+
         .empty-state {
-            background: white;
+            background: var(--card-bg);
             border-radius: 15px;
             padding: 50px 25px;
             text-align: center;
@@ -394,73 +873,393 @@
         }
 
         .empty-state h3 {
-            color: #667eea;
+            color: var(--primary-color);
             margin-bottom: 10px;
         }
 
         .empty-state p {
-            color: #999;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .header-controls {
+                position: static;
+                justify-content: center;
+                margin-top: 15px;
+            }
+
+            .form-options, .filter-controls {
+                flex-direction: column;
+            }
+
+            .gossip-actions {
+                flex-direction: column;
+            }
+
+            .reaction-btn, .truth-btn, .action-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .user-stats {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 20px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
+            <div class="header-controls">
+                <button class="icon-btn" onclick="toggleDarkMode()" title="Modo oscuro">🌙</button>
+                <button class="icon-btn" onclick="openNotifications()" title="Notificaciones">
+                    🔔
+                    <span id="notifBadge" style="display:none; position:absolute; top:-5px; right:-5px; background:red; color:white; border-radius:50%; width:20px; height:20px; font-size:0.7em; line-height:20px;"></span>
+                </button>
+                <button class="icon-btn" onclick="openSettings()" title="Configuración">⚙️</button>
+            </div>
             <h1>🔥 ChismesApp</h1>
             <p class="subtitle">La red social donde los chismes vuelan</p>
         </header>
 
-        <div class="user-section">
-            <div class="user-input">
-                <input type="text" id="usernameInput" placeholder="Ingresa tu nombre de usuario...">
-                <button onclick="setUsername()">Establecer Usuario</button>
-            </div>
-            <div class="current-user">
-                Usuario actual: <strong id="currentUsername">Anónimo</strong>
-            </div>
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="switchTab('feed')">📰 Feed</button>
+            <button class="nav-tab" onclick="switchTab('trending')">🔥 Trending</button>
+            <button class="nav-tab" onclick="switchTab('following')">👥 Siguiendo</button>
+            <button class="nav-tab" onclick="switchTab('favorites')">⭐ Favoritos</button>
+            <button class="nav-tab" onclick="switchTab('profile')">👤 Perfil</button>
+            <button class="nav-tab" onclick="switchTab('ranking')">🏆 Ranking</button>
         </div>
 
-        <div class="post-form">
-            <h2>✍️ Comparte un chisme</h2>
-            <textarea id="gossipContent" placeholder="¿Qué chisme tienes hoy? Compártelo aquí..."></textarea>
-            <div class="form-options">
-                <select id="categorySelect">
-                    <option value="Amor">💕 Amor</option>
-                    <option value="Trabajo">💼 Trabajo</option>
-                    <option value="Familia">👨‍👩‍👧‍👦 Familia</option>
-                    <option value="Escuela">📚 Escuela</option>
-                    <option value="Celebridades">⭐ Celebridades</option>
-                    <option value="Otros">🎭 Otros</option>
-                </select>
-                <div class="anonymous-toggle">
-                    <input type="checkbox" id="anonymousCheck">
-                    <label for="anonymousCheck">Publicar como anónimo</label>
+        <div id="feedTab" class="tab-content">
+            <div class="user-section">
+                <div class="user-input">
+                    <input type="text" id="usernameInput" placeholder="Ingresa tu nombre de usuario...">
+                    <button onclick="setUsername()">Establecer Usuario</button>
+                </div>
+                <div class="current-user">
+                    Usuario actual: <strong id="currentUsername">Anónimo</strong>
+                    <span id="userLevel"></span>
+                </div>
+                <div class="user-stats">
+                    <div class="user-stat">
+                        <div class="user-stat-value" id="userKarma">0</div>
+                        <div class="user-stat-label">Karma</div>
+                    </div>
+                    <div class="user-stat">
+                        <div class="user-stat-value" id="userPosts">0</div>
+                        <div class="user-stat-label">Chismes</div>
+                    </div>
+                    <div class="user-stat">
+                        <div class="user-stat-value" id="userFollowers">0</div>
+                        <div class="user-stat-label">Seguidores</div>
+                    </div>
+                </div>
+                <div id="userBadges"></div>
+            </div>
+
+            <div class="search-filter-section">
+                <div class="search-box">
+                    <input type="search" id="searchInput" placeholder="🔍 Buscar chismes, usuarios, hashtags..." onkeyup="filterGossips()">
+                </div>
+                <div class="filter-controls">
+                    <select id="categoryFilter" onchange="filterGossips()">
+                        <option value="">Todas las categorías</option>
+                        <option value="Amor">💕 Amor</option>
+                        <option value="Trabajo">💼 Trabajo</option>
+                        <option value="Familia">👨‍👩‍👧‍👦 Familia</option>
+                        <option value="Escuela">📚 Escuela</option>
+                        <option value="Celebridades">⭐ Celebridades</option>
+                        <option value="Otros">🎭 Otros</option>
+                    </select>
+                    <select id="sortFilter" onchange="filterGossips()">
+                        <option value="recent">Más recientes</option>
+                        <option value="popular">Más populares</option>
+                        <option value="commented">Más comentados</option>
+                        <option value="trending">Trending</option>
+                    </select>
                 </div>
             </div>
-            <button onclick="postGossip()">🚀 Publicar Chisme</button>
+
+            <div class="post-form">
+                <h2>✍️ Comparte un chisme</h2>
+                <textarea id="gossipContent" placeholder="¿Qué chisme tienes hoy? Usa #hashtags para categorizar..."></textarea>
+                <div class="emoji-picker">
+                    <button class="emoji-btn" onclick="insertEmoji('😂')">😂</button>
+                    <button class="emoji-btn" onclick="insertEmoji('😱')">😱</button>
+                    <button class="emoji-btn" onclick="insertEmoji('🔥')">🔥</button>
+                    <button class="emoji-btn" onclick="insertEmoji('💕')">💕</button>
+                    <button class="emoji-btn" onclick="insertEmoji('😍')">😍</button>
+                    <button class="emoji-btn" onclick="insertEmoji('😭')">😭</button>
+                    <button class="emoji-btn" onclick="insertEmoji('🤯')">🤯</button>
+                    <button class="emoji-btn" onclick="insertEmoji('👀')">👀</button>
+                </div>
+                <div class="form-options">
+                    <select id="categorySelect">
+                        <option value="Amor">💕 Amor</option>
+                        <option value="Trabajo">💼 Trabajo</option>
+                        <option value="Familia">👨‍👩‍👧‍👦 Familia</option>
+                        <option value="Escuela">📚 Escuela</option>
+                        <option value="Celebridades">⭐ Celebridades</option>
+                        <option value="Otros">🎭 Otros</option>
+                    </select>
+                    <input type="text" id="gifUrl" placeholder="URL de GIF (opcional)" style="flex: 1;">
+                    <div class="anonymous-toggle">
+                        <input type="checkbox" id="anonymousCheck">
+                        <label for="anonymousCheck">Publicar como anónimo</label>
+                    </div>
+                </div>
+                <button onclick="postGossip()">🚀 Publicar Chisme</button>
+            </div>
+
+            <div id="feed" class="feed"></div>
         </div>
 
-        <div id="feed" class="feed"></div>
+        <div id="trendingTab" class="tab-content" style="display:none;">
+            <h2 style="color: var(--card-bg); margin-bottom: 20px; text-align: center;">🔥 Chismes en Tendencia</h2>
+            <div id="trendingFeed" class="feed"></div>
+        </div>
+
+        <div id="followingTab" class="tab-content" style="display:none;">
+            <h2 style="color: var(--card-bg); margin-bottom: 20px; text-align: center;">👥 Chismes de Usuarios que Sigues</h2>
+            <div id="followingFeed" class="feed"></div>
+        </div>
+
+        <div id="favoritesTab" class="tab-content" style="display:none;">
+            <h2 style="color: var(--card-bg); margin-bottom: 20px; text-align: center;">⭐ Tus Chismes Favoritos</h2>
+            <div id="favoritesFeed" class="feed"></div>
+        </div>
+
+        <div id="profileTab" class="tab-content" style="display:none;">
+            <div class="user-section">
+                <div class="profile-section">
+                    <div class="profile-avatar" id="profileAvatar">👤</div>
+                    <div class="profile-username" id="profileUsername">Anónimo</div>
+                    <div class="user-stats">
+                        <div class="user-stat">
+                            <div class="user-stat-value" id="profileKarma">0</div>
+                            <div class="user-stat-label">Karma</div>
+                        </div>
+                        <div class="user-stat">
+                            <div class="user-stat-value" id="profilePosts">0</div>
+                            <div class="user-stat-label">Chismes</div>
+                        </div>
+                        <div class="user-stat">
+                            <div class="user-stat-value" id="profileComments">0</div>
+                            <div class="user-stat-label">Comentarios</div>
+                        </div>
+                        <div class="user-stat">
+                            <div class="user-stat-value" id="profileFollowers">0</div>
+                            <div class="user-stat-label">Seguidores</div>
+                        </div>
+                        <div class="user-stat">
+                            <div class="user-stat-value" id="profileFollowing">0</div>
+                            <div class="user-stat-label">Siguiendo</div>
+                        </div>
+                    </div>
+                    <div class="profile-badges" id="profileBadges"></div>
+                </div>
+            </div>
+            <h3 style="color: var(--card-bg); margin: 20px 0; text-align: center;">Mis Chismes</h3>
+            <div id="myGossipsFeed" class="feed"></div>
+        </div>
+
+        <div id="rankingTab" class="tab-content" style="display:none;">
+            <h2 style="color: var(--card-bg); margin-bottom: 20px; text-align: center;">🏆 Ranking de Chismosos</h2>
+            <div class="user-section">
+                <ul class="leaderboard" id="leaderboard"></ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Perfil de Usuario</h2>
+                <button class="close-btn" onclick="closeModal('profileModal')">&times;</button>
+            </div>
+            <div class="profile-section">
+                <div class="profile-avatar" id="modalProfileAvatar">👤</div>
+                <div class="profile-username" id="modalProfileUsername">Usuario</div>
+                <div class="user-stats">
+                    <div class="user-stat">
+                        <div class="user-stat-value" id="modalProfileKarma">0</div>
+                        <div class="user-stat-label">Karma</div>
+                    </div>
+                    <div class="user-stat">
+                        <div class="user-stat-value" id="modalProfilePosts">0</div>
+                        <div class="user-stat-label">Chismes</div>
+                    </div>
+                    <div class="user-stat">
+                        <div class="user-stat-value" id="modalProfileFollowers">0</div>
+                        <div class="user-stat-label">Seguidores</div>
+                    </div>
+                </div>
+                <div class="profile-badges" id="modalProfileBadges"></div>
+                <button class="follow-btn" id="followBtn" onclick="toggleFollow()">Seguir</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">⚙️ Configuración</h2>
+                <button class="close-btn" onclick="closeModal('settingsModal')">&times;</button>
+            </div>
+            <div class="settings-grid">
+                <div class="setting-item">
+                    <span class="setting-label">Modo Oscuro</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <span class="setting-label">Tema</span>
+                    <select id="themeSelect" onchange="changeTheme()">
+                        <option value="default">Predeterminado</option>
+                        <option value="sunset">Atardecer</option>
+                        <option value="ocean">Océano</option>
+                        <option value="forest">Bosque</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <span class="setting-label">Exportar Datos</span>
+                    <button onclick="exportData()">📥 Descargar</button>
+                </div>
+                <div class="setting-item">
+                    <span class="setting-label">Importar Datos</span>
+                    <input type="file" id="importFile" accept=".json" onchange="importData()" style="display:none;">
+                    <button onclick="document.getElementById('importFile').click()">📤 Cargar</button>
+                </div>
+                <div class="setting-item">
+                    <span class="setting-label">Borrar Todos los Datos</span>
+                    <button onclick="clearAllData()" style="background: linear-gradient(135deg, #dc3545, #c82333);">🗑️ Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="notificationsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">🔔 Notificaciones</h2>
+                <button class="close-btn" onclick="closeModal('notificationsModal')">&times;</button>
+            </div>
+            <div class="notifications-list" id="notificationsList"></div>
+        </div>
+    </div>
+
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">✏️ Editar Chisme</h2>
+                <button class="close-btn" onclick="closeModal('editModal')">&times;</button>
+            </div>
+            <textarea id="editContent" style="width: 100%; min-height: 150px; margin-bottom: 15px;"></textarea>
+            <button onclick="saveEdit()">💾 Guardar Cambios</button>
+        </div>
+    </div>
+
+    <div id="notification" class="notification">
+        <div class="notification-text" id="notificationText"></div>
     </div>
 
     <script>
+        // Data structures
         let currentUser = localStorage.getItem('username') || 'Anónimo';
         let gossips = JSON.parse(localStorage.getItem('gossips')) || [];
+        let users = JSON.parse(localStorage.getItem('users')) || {};
+        let following = JSON.parse(localStorage.getItem('following')) || {};
+        let favorites = JSON.parse(localStorage.getItem('favorites')) || {};
+        let notifications = JSON.parse(localStorage.getItem('notifications')) || [];
         let gossipIdCounter = parseInt(localStorage.getItem('gossipIdCounter')) || 0;
+        let currentlyViewing = null;
+        let editingGossipId = null;
+        let currentTab = 'feed';
 
         // Initialize
-        document.getElementById('currentUsername').textContent = currentUser;
-        renderFeed();
+        initializeApp();
+
+        function initializeApp() {
+            document.getElementById('currentUsername').textContent = currentUser;
+            if (!users[currentUser]) {
+                users[currentUser] = {
+                    karma: 0,
+                    posts: 0,
+                    comments: 0,
+                    followers: 0,
+                    following: 0,
+                    joinDate: new Date().toISOString()
+                };
+            }
+            if (!following[currentUser]) {
+                following[currentUser] = [];
+            }
+            if (!favorites[currentUser]) {
+                favorites[currentUser] = [];
+            }
+
+            const darkMode = localStorage.getItem('darkMode') === 'true';
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+                const toggle = document.getElementById('darkModeToggle');
+                if (toggle) toggle.checked = true;
+            }
+
+            const theme = localStorage.getItem('theme') || 'default';
+            if (theme !== 'default') {
+                document.body.classList.add(`theme-${theme}`);
+            }
+
+            updateUserStats();
+            renderFeed();
+            updateNotificationBadge();
+        }
 
         function setUsername() {
             const input = document.getElementById('usernameInput');
             const username = input.value.trim();
 
-            if (username) {
+            if (username && username !== 'Anónimo') {
                 currentUser = username;
                 localStorage.setItem('username', username);
+
+                if (!users[currentUser]) {
+                    users[currentUser] = {
+                        karma: 0,
+                        posts: 0,
+                        comments: 0,
+                        followers: 0,
+                        following: 0,
+                        joinDate: new Date().toISOString()
+                    };
+                }
+                if (!following[currentUser]) {
+                    following[currentUser] = [];
+                }
+                if (!favorites[currentUser]) {
+                    favorites[currentUser] = [];
+                }
+
+                saveUsers();
                 document.getElementById('currentUsername').textContent = username;
                 input.value = '';
+                updateUserStats();
+                renderFeed();
+                showNotification(`¡Bienvenido, ${username}! 🎉`);
             } else {
                 alert('Por favor ingresa un nombre de usuario válido');
             }
@@ -470,88 +1269,166 @@
             const content = document.getElementById('gossipContent').value.trim();
             const category = document.getElementById('categorySelect').value;
             const isAnonymous = document.getElementById('anonymousCheck').checked;
+            const gifUrl = document.getElementById('gifUrl').value.trim();
 
             if (!content) {
                 alert('Por favor escribe algo antes de publicar');
                 return;
             }
 
+            const hashtags = content.match(/#\w+/g) || [];
+            const author = isAnonymous ? 'Anónimo' : currentUser;
+
             const gossip = {
                 id: gossipIdCounter++,
                 content: content,
-                user: isAnonymous ? 'Anónimo' : currentUser,
+                user: author,
                 category: category,
                 timestamp: new Date().toISOString(),
-                reactions: {
-                    fire: 0,
-                    shocked: 0,
-                    laugh: 0
-                },
+                reactions: { fire: 0, shocked: 0, laugh: 0 },
                 userReactions: {},
-                truthVotes: {
-                    truth: 0,
-                    lie: 0
-                },
+                truthVotes: { truth: 0, lie: 0 },
                 userTruthVotes: {},
                 comments: [],
-                views: 0
+                views: 0,
+                hashtags: hashtags,
+                gifUrl: gifUrl,
+                reports: 0,
+                reportedBy: []
             };
 
             gossips.unshift(gossip);
-            localStorage.setItem('gossips', JSON.stringify(gossips));
-            localStorage.setItem('gossipIdCounter', gossipIdCounter);
+
+            if (!isAnonymous && currentUser !== 'Anónimo') {
+                users[currentUser].posts++;
+                users[currentUser].karma += 5;
+            }
+
+            saveGossips();
+            saveUsers();
 
             document.getElementById('gossipContent').value = '';
+            document.getElementById('gifUrl').value = '';
             document.getElementById('anonymousCheck').checked = false;
 
+            updateUserStats();
             renderFeed();
+            showNotification('¡Chisme publicado exitosamente! 🚀');
         }
 
         function renderFeed() {
             const feed = document.getElementById('feed');
+            let filteredGossips = [...gossips];
 
-            if (gossips.length === 0) {
-                feed.innerHTML = `
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const sortFilter = document.getElementById('sortFilter').value;
+
+            if (searchTerm) {
+                filteredGossips = filteredGossips.filter(g =>
+                    g.content.toLowerCase().includes(searchTerm) ||
+                    g.user.toLowerCase().includes(searchTerm) ||
+                    g.hashtags.some(h => h.toLowerCase().includes(searchTerm))
+                );
+            }
+
+            if (categoryFilter) {
+                filteredGossips = filteredGossips.filter(g => g.category === categoryFilter);
+            }
+
+            switch(sortFilter) {
+                case 'popular':
+                    filteredGossips.sort((a, b) => getPopularityScore(b) - getPopularityScore(a));
+                    break;
+                case 'commented':
+                    filteredGossips.sort((a, b) => b.comments.length - a.comments.length);
+                    break;
+                case 'trending':
+                    filteredGossips.sort((a, b) => getTrendingScore(b) - getTrendingScore(a));
+                    break;
+            }
+
+            renderGossipsList(feed, filteredGossips);
+        }
+
+        function renderGossipsList(container, gossipsList) {
+            if (gossipsList.length === 0) {
+                container.innerHTML = `
                     <div class="empty-state">
-                        <h3>¡No hay chismes todavía!</h3>
-                        <p>Sé el primero en compartir un chisme jugoso</p>
+                        <h3>¡No hay chismes aquí!</h3>
+                        <p>Prueba ajustando los filtros o sé el primero en publicar</p>
                     </div>
                 `;
                 return;
             }
 
-            feed.innerHTML = gossips.map(gossip => {
+            container.innerHTML = gossipsList.map(gossip => {
                 const timeAgo = getTimeAgo(new Date(gossip.timestamp));
                 const userReaction = gossip.userReactions[currentUser] || null;
                 const userTruthVote = gossip.userTruthVotes[currentUser] || null;
+                const isFavorite = favorites[currentUser] && favorites[currentUser].includes(gossip.id);
+                const isTrending = getTrendingScore(gossip) > 50;
+                const isOwner = gossip.user === currentUser;
+
+                const gifHtml = gossip.gifUrl ? `<img src="${gossip.gifUrl}" class="gossip-gif" onerror="this.style.display='none'">` : '';
+                const hashtagsHtml = gossip.hashtags.length > 0 ? `
+                    <div class="gossip-hashtags">
+                        ${gossip.hashtags.map(tag => `<span class="hashtag" onclick="searchHashtag('${tag}')">${tag}</span>`).join('')}
+                    </div>
+                ` : '';
 
                 return `
-                    <div class="gossip-card">
+                    <div class="gossip-card ${isTrending ? 'trending' : ''} ${isFavorite ? 'favorited' : ''}">
+                        ${isTrending ? '<span class="trending-badge">🔥 TRENDING</span>' : ''}
                         <div class="gossip-header">
-                            <span class="gossip-user">${gossip.user}</span>
+                            <span class="gossip-user" onclick="viewProfile('${gossip.user}')">${gossip.user}</span>
                             <span class="gossip-category">${gossip.category}</span>
                         </div>
                         <div class="gossip-content">${gossip.content}</div>
+                        ${hashtagsHtml}
+                        ${gifHtml}
                         <div class="gossip-meta">Publicado ${timeAgo}</div>
 
                         <div class="stats">
-                            <div class="stat-item">👁️ ${gossip.views} vistas</div>
-                            <div class="stat-item">💬 ${gossip.comments.length} comentarios</div>
+                            <div class="stat-item">👁️ ${gossip.views}</div>
+                            <div class="stat-item">💬 ${gossip.comments.length}</div>
+                            <div class="stat-item">🔥 ${getPopularityScore(gossip)}</div>
                         </div>
 
                         <div class="gossip-actions">
                             <button class="reaction-btn ${userReaction === 'fire' ? 'active' : ''}"
                                     onclick="toggleReaction(${gossip.id}, 'fire')">
-                                🔥 Caliente (${gossip.reactions.fire})
+                                🔥 ${gossip.reactions.fire}
                             </button>
                             <button class="reaction-btn ${userReaction === 'shocked' ? 'active' : ''}"
                                     onclick="toggleReaction(${gossip.id}, 'shocked')">
-                                😱 Escandaloso (${gossip.reactions.shocked})
+                                😱 ${gossip.reactions.shocked}
                             </button>
                             <button class="reaction-btn ${userReaction === 'laugh' ? 'active' : ''}"
                                     onclick="toggleReaction(${gossip.id}, 'laugh')">
-                                😂 Gracioso (${gossip.reactions.laugh})
+                                😂 ${gossip.reactions.laugh}
                             </button>
+                        </div>
+
+                        <div class="gossip-actions" style="border-top: none; padding-top: 0;">
+                            <button class="action-btn ${isFavorite ? 'active' : ''}" onclick="toggleFavorite(${gossip.id})">
+                                ⭐ ${isFavorite ? 'Favorito' : 'Favorito'}
+                            </button>
+                            <button class="action-btn" onclick="shareGossip(${gossip.id})">
+                                📤 Compartir
+                            </button>
+                            ${isOwner && gossip.user !== 'Anónimo' ? `
+                                <button class="action-btn" onclick="editGossip(${gossip.id})">
+                                    ✏️ Editar
+                                </button>
+                                <button class="action-btn" onclick="deleteGossip(${gossip.id})">
+                                    🗑️ Borrar
+                                </button>
+                            ` : `
+                                <button class="action-btn" onclick="reportGossip(${gossip.id})">
+                                    🚩 Reportar
+                                </button>
+                            `}
                         </div>
 
                         <div class="truth-meter">
@@ -567,19 +1444,19 @@
 
                         <div class="comments-section">
                             <span class="comments-toggle" onclick="toggleComments(${gossip.id})">
-                                💬 Ver comentarios (${gossip.comments.length})
+                                💬 ${gossip.comments.length > 0 ? `Ver ${gossip.comments.length} comentarios` : 'Comentar'}
                             </span>
                             <div class="comments-list" id="comments-${gossip.id}">
                                 ${gossip.comments.map(comment => `
                                     <div class="comment">
-                                        <div class="comment-user">${comment.user}</div>
+                                        <div class="comment-user" onclick="viewProfile('${comment.user}')">${comment.user}</div>
                                         <div class="comment-text">${comment.text}</div>
                                     </div>
                                 `).join('')}
                                 <div class="comment-form">
                                     <input type="text" class="comment-input" id="comment-input-${gossip.id}"
                                            placeholder="Escribe un comentario...">
-                                    <button class="comment-btn" onclick="addComment(${gossip.id})">Comentar</button>
+                                    <button class="comment-btn" onclick="addComment(${gossip.id})">💬</button>
                                 </div>
                             </div>
                         </div>
@@ -587,8 +1464,7 @@
                 `;
             }).join('');
 
-            // Increment views
-            gossips.forEach(g => g.views++);
+            gossipsList.forEach(g => g.views++);
             saveGossips();
         }
 
@@ -605,10 +1481,18 @@
                 }
                 gossip.reactions[reactionType]++;
                 gossip.userReactions[currentUser] = reactionType;
+
+                if (currentUser !== 'Anónimo' && gossip.user !== currentUser && gossip.user !== 'Anónimo') {
+                    addNotification(gossip.user, `${currentUser} reaccionó a tu chisme con ${reactionType === 'fire' ? '🔥' : reactionType === 'shocked' ? '😱' : '😂'}`);
+                    if (users[gossip.user]) {
+                        users[gossip.user].karma += 1;
+                    }
+                }
             }
 
             saveGossips();
-            renderFeed();
+            saveUsers();
+            renderCurrentTab();
         }
 
         function voteTruth(gossipId, voteType) {
@@ -627,7 +1511,7 @@
             }
 
             saveGossips();
-            renderFeed();
+            renderCurrentTab();
         }
 
         function toggleComments(gossipId) {
@@ -651,18 +1535,610 @@
                 timestamp: new Date().toISOString()
             });
 
+            if (currentUser !== 'Anónimo') {
+                users[currentUser].comments++;
+                users[currentUser].karma += 2;
+
+                if (gossip.user !== currentUser && gossip.user !== 'Anónimo') {
+                    addNotification(gossip.user, `${currentUser} comentó en tu chisme: "${text.substring(0, 50)}${text.length > 50 ? '...' : ''}"`);
+                    if (users[gossip.user]) {
+                        users[gossip.user].karma += 3;
+                    }
+                }
+            }
+
             input.value = '';
             saveGossips();
-            renderFeed();
+            saveUsers();
+            renderCurrentTab();
 
-            // Keep comments open
             setTimeout(() => {
                 document.getElementById(`comments-${gossipId}`).classList.add('show');
             }, 0);
         }
 
-        function saveGossips() {
-            localStorage.setItem('gossips', JSON.stringify(gossips));
+        function toggleFavorite(gossipId) {
+            if (!favorites[currentUser]) {
+                favorites[currentUser] = [];
+            }
+
+            const index = favorites[currentUser].indexOf(gossipId);
+            if (index > -1) {
+                favorites[currentUser].splice(index, 1);
+                showNotification('Chisme eliminado de favoritos');
+            } else {
+                favorites[currentUser].push(gossipId);
+                showNotification('Chisme agregado a favoritos ⭐');
+            }
+
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+            renderCurrentTab();
+        }
+
+        function shareGossip(gossipId) {
+            const gossip = gossips.find(g => g.id === gossipId);
+            const shareText = `¡Mira este chisme en ChismesApp! "${gossip.content.substring(0, 100)}..." - Por ${gossip.user}`;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: 'ChismesApp',
+                    text: shareText
+                }).catch(() => {});
+            } else {
+                const tempInput = document.createElement('input');
+                tempInput.value = shareText;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+                showNotification('¡Texto copiado al portapapeles! 📋');
+            }
+        }
+
+        function editGossip(gossipId) {
+            const gossip = gossips.find(g => g.id === gossipId);
+            editingGossipId = gossipId;
+            document.getElementById('editContent').value = gossip.content;
+            openModal('editModal');
+        }
+
+        function saveEdit() {
+            const gossip = gossips.find(g => g.id === editingGossipId);
+            const newContent = document.getElementById('editContent').value.trim();
+
+            if (!newContent) {
+                alert('El contenido no puede estar vacío');
+                return;
+            }
+
+            gossip.content = newContent;
+            gossip.hashtags = newContent.match(/#\w+/g) || [];
+            gossip.edited = true;
+            gossip.editedAt = new Date().toISOString();
+
+            saveGossips();
+            closeModal('editModal');
+            renderCurrentTab();
+            showNotification('Chisme editado exitosamente ✏️');
+        }
+
+        function deleteGossip(gossipId) {
+            if (confirm('¿Estás seguro de que quieres eliminar este chisme?')) {
+                const index = gossips.findIndex(g => g.id === gossipId);
+                if (index > -1) {
+                    gossips.splice(index, 1);
+                    if (currentUser !== 'Anónimo' && users[currentUser]) {
+                        users[currentUser].posts = Math.max(0, users[currentUser].posts - 1);
+                    }
+                    saveGossips();
+                    saveUsers();
+                    renderCurrentTab();
+                    showNotification('Chisme eliminado 🗑️');
+                }
+            }
+        }
+
+        function reportGossip(gossipId) {
+            const gossip = gossips.find(g => g.id === gossipId);
+
+            if (gossip.reportedBy.includes(currentUser)) {
+                showNotification('Ya has reportado este chisme');
+                return;
+            }
+
+            if (confirm('¿Deseas reportar este chisme por contenido inapropiado?')) {
+                gossip.reports++;
+                gossip.reportedBy.push(currentUser);
+                saveGossips();
+                showNotification('Chisme reportado. Gracias por tu feedback 🚩');
+
+                if (gossip.reports >= 5) {
+                    showNotification('Este chisme ha sido reportado múltiples veces');
+                }
+            }
+        }
+
+        function viewProfile(username) {
+            if (username === 'Anónimo') return;
+
+            currentlyViewing = username;
+
+            if (!users[username]) {
+                users[username] = {
+                    karma: 0,
+                    posts: 0,
+                    comments: 0,
+                    followers: 0,
+                    following: 0,
+                    joinDate: new Date().toISOString()
+                };
+            }
+
+            const user = users[username];
+            const isFollowing = following[currentUser] && following[currentUser].includes(username);
+
+            document.getElementById('modalProfileAvatar').textContent = username[0].toUpperCase();
+            document.getElementById('modalProfileUsername').textContent = username;
+            document.getElementById('modalProfileKarma').textContent = user.karma;
+            document.getElementById('modalProfilePosts').textContent = user.posts;
+            document.getElementById('modalProfileFollowers').textContent = user.followers || 0;
+
+            const badges = getUserBadges(user);
+            document.getElementById('modalProfileBadges').innerHTML = badges.map(b =>
+                `<span class="badge">${b}</span>`
+            ).join('');
+
+            const followBtn = document.getElementById('followBtn');
+            if (username === currentUser) {
+                followBtn.style.display = 'none';
+            } else {
+                followBtn.style.display = 'inline-block';
+                followBtn.textContent = isFollowing ? 'Dejar de seguir' : 'Seguir';
+                followBtn.className = isFollowing ? 'follow-btn' : 'follow-btn';
+            }
+
+            openModal('profileModal');
+        }
+
+        function toggleFollow() {
+            if (!currentlyViewing || currentlyViewing === currentUser || currentUser === 'Anónimo') return;
+
+            if (!following[currentUser]) {
+                following[currentUser] = [];
+            }
+
+            const index = following[currentUser].indexOf(currentlyViewing);
+
+            if (index > -1) {
+                following[currentUser].splice(index, 1);
+                users[currentlyViewing].followers = Math.max(0, (users[currentlyViewing].followers || 0) - 1);
+                users[currentUser].following = Math.max(0, (users[currentUser].following || 0) - 1);
+                showNotification(`Has dejado de seguir a ${currentlyViewing}`);
+            } else {
+                following[currentUser].push(currentlyViewing);
+                users[currentlyViewing].followers = (users[currentlyViewing].followers || 0) + 1;
+                users[currentUser].following = (users[currentUser].following || 0) + 1;
+                addNotification(currentlyViewing, `${currentUser} comenzó a seguirte! 👥`);
+                showNotification(`Ahora sigues a ${currentlyViewing} 👥`);
+            }
+
+            localStorage.setItem('following', JSON.stringify(following));
+            saveUsers();
+            updateUserStats();
+            viewProfile(currentlyViewing);
+        }
+
+        function switchTab(tabName) {
+            currentTab = tabName;
+
+            document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(content => content.style.display = 'none');
+
+            switch(tabName) {
+                case 'feed':
+                    document.getElementById('feedTab').style.display = 'block';
+                    renderFeed();
+                    break;
+                case 'trending':
+                    document.getElementById('trendingTab').style.display = 'block';
+                    renderTrending();
+                    break;
+                case 'following':
+                    document.getElementById('followingTab').style.display = 'block';
+                    renderFollowing();
+                    break;
+                case 'favorites':
+                    document.getElementById('favoritesTab').style.display = 'block';
+                    renderFavorites();
+                    break;
+                case 'profile':
+                    document.getElementById('profileTab').style.display = 'block';
+                    renderProfile();
+                    break;
+                case 'ranking':
+                    document.getElementById('rankingTab').style.display = 'block';
+                    renderRanking();
+                    break;
+            }
+        }
+
+        function renderTrending() {
+            const trendingGossips = [...gossips]
+                .sort((a, b) => getTrendingScore(b) - getTrendingScore(a))
+                .slice(0, 20);
+            renderGossipsList(document.getElementById('trendingFeed'), trendingGossips);
+        }
+
+        function renderFollowing() {
+            if (!following[currentUser] || following[currentUser].length === 0) {
+                document.getElementById('followingFeed').innerHTML = `
+                    <div class="empty-state">
+                        <h3>¡No sigues a nadie todavía!</h3>
+                        <p>Explora el feed y sigue a usuarios interesantes</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const followingGossips = gossips.filter(g =>
+                following[currentUser].includes(g.user)
+            );
+            renderGossipsList(document.getElementById('followingFeed'), followingGossips);
+        }
+
+        function renderFavorites() {
+            if (!favorites[currentUser] || favorites[currentUser].length === 0) {
+                document.getElementById('favoritesFeed').innerHTML = `
+                    <div class="empty-state">
+                        <h3>¡No tienes favoritos todavía!</h3>
+                        <p>Marca chismes como favoritos para encontrarlos fácilmente</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const favoriteGossips = gossips.filter(g =>
+                favorites[currentUser].includes(g.id)
+            );
+            renderGossipsList(document.getElementById('favoritesFeed'), favoriteGossips);
+        }
+
+        function renderProfile() {
+            if (currentUser === 'Anónimo') {
+                document.getElementById('myGossipsFeed').innerHTML = `
+                    <div class="empty-state">
+                        <h3>Establece un nombre de usuario</h3>
+                        <p>Para ver tu perfil y estadísticas</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const user = users[currentUser];
+            document.getElementById('profileAvatar').textContent = currentUser[0].toUpperCase();
+            document.getElementById('profileUsername').textContent = currentUser;
+            document.getElementById('profileKarma').textContent = user.karma;
+            document.getElementById('profilePosts').textContent = user.posts;
+            document.getElementById('profileComments').textContent = user.comments;
+            document.getElementById('profileFollowers').textContent = user.followers || 0;
+            document.getElementById('profileFollowing').textContent = user.following || 0;
+
+            const badges = getUserBadges(user);
+            document.getElementById('profileBadges').innerHTML = badges.map(b =>
+                `<span class="badge">${b}</span>`
+            ).join('');
+
+            const myGossips = gossips.filter(g => g.user === currentUser);
+            renderGossipsList(document.getElementById('myGossipsFeed'), myGossips);
+        }
+
+        function renderRanking() {
+            const usersList = Object.entries(users)
+                .filter(([username]) => username !== 'Anónimo')
+                .sort(([, a], [, b]) => b.karma - a.karma)
+                .slice(0, 50);
+
+            const leaderboard = document.getElementById('leaderboard');
+
+            if (usersList.length === 0) {
+                leaderboard.innerHTML = `
+                    <div class="empty-state">
+                        <h3>¡El ranking está vacío!</h3>
+                        <p>Sé el primero en ganar karma</p>
+                    </div>
+                `;
+                return;
+            }
+
+            leaderboard.innerHTML = usersList.map(([username, user], index) => {
+                const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '';
+                return `
+                    <li class="leaderboard-item">
+                        <span class="leaderboard-rank">#${index + 1} ${medal}</span>
+                        <span class="leaderboard-user" onclick="viewProfile('${username}')" style="cursor: pointer;">${username}</span>
+                        <span class="leaderboard-score">${user.karma} ⭐</span>
+                    </li>
+                `;
+            }).join('');
+        }
+
+        function renderCurrentTab() {
+            switch(currentTab) {
+                case 'feed':
+                    renderFeed();
+                    break;
+                case 'trending':
+                    renderTrending();
+                    break;
+                case 'following':
+                    renderFollowing();
+                    break;
+                case 'favorites':
+                    renderFavorites();
+                    break;
+                case 'profile':
+                    renderProfile();
+                    break;
+                case 'ranking':
+                    renderRanking();
+                    break;
+            }
+        }
+
+        function filterGossips() {
+            renderFeed();
+        }
+
+        function searchHashtag(hashtag) {
+            document.getElementById('searchInput').value = hashtag;
+            filterGossips();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function insertEmoji(emoji) {
+            const textarea = document.getElementById('gossipContent');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const text = textarea.value;
+            textarea.value = text.substring(0, start) + emoji + text.substring(end);
+            textarea.focus();
+            textarea.selectionStart = textarea.selectionEnd = start + emoji.length;
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDark);
+
+            const toggle = document.getElementById('darkModeToggle');
+            if (toggle) toggle.checked = isDark;
+        }
+
+        function changeTheme() {
+            const theme = document.getElementById('themeSelect').value;
+            document.body.classList.remove('theme-sunset', 'theme-ocean', 'theme-forest');
+
+            if (theme !== 'default') {
+                document.body.classList.add(`theme-${theme}`);
+            }
+
+            localStorage.setItem('theme', theme);
+        }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('show');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+        }
+
+        function openSettings() {
+            const darkMode = document.body.classList.contains('dark-mode');
+            document.getElementById('darkModeToggle').checked = darkMode;
+
+            const theme = localStorage.getItem('theme') || 'default';
+            document.getElementById('themeSelect').value = theme;
+
+            openModal('settingsModal');
+        }
+
+        function openNotifications() {
+            const notifList = document.getElementById('notificationsList');
+
+            if (notifications.length === 0) {
+                notifList.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No tienes notificaciones</h3>
+                        <p>Te avisaremos cuando algo interesante suceda</p>
+                    </div>
+                `;
+            } else {
+                notifList.innerHTML = notifications.slice().reverse().map((notif, index) => `
+                    <div class="notification-item ${!notif.read ? 'unread' : ''}" onclick="markNotificationRead(${notifications.length - 1 - index})">
+                        <div style="color: var(--text-color); font-weight: bold; margin-bottom: 5px;">${notif.text}</div>
+                        <div style="color: var(--text-muted); font-size: 0.85em;">${getTimeAgo(new Date(notif.timestamp))}</div>
+                    </div>
+                `).join('');
+            }
+
+            openModal('notificationsModal');
+        }
+
+        function addNotification(username, text) {
+            if (username === 'Anónimo') return;
+
+            notifications.push({
+                username: username,
+                text: text,
+                timestamp: new Date().toISOString(),
+                read: false
+            });
+
+            localStorage.setItem('notifications', JSON.stringify(notifications));
+            updateNotificationBadge();
+        }
+
+        function markNotificationRead(index) {
+            if (notifications[index]) {
+                notifications[index].read = true;
+                localStorage.setItem('notifications', JSON.stringify(notifications));
+                updateNotificationBadge();
+                openNotifications();
+            }
+        }
+
+        function updateNotificationBadge() {
+            const unreadCount = notifications.filter(n => !n.read).length;
+            const badge = document.getElementById('notifBadge');
+
+            if (unreadCount > 0) {
+                badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+                badge.style.display = 'block';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        function showNotification(text) {
+            const notif = document.getElementById('notification');
+            document.getElementById('notificationText').textContent = text;
+            notif.classList.add('show');
+
+            setTimeout(() => {
+                notif.classList.remove('show');
+            }, 3000);
+        }
+
+        function exportData() {
+            const data = {
+                gossips: gossips,
+                users: users,
+                following: following,
+                favorites: favorites,
+                notifications: notifications,
+                currentUser: currentUser,
+                exportDate: new Date().toISOString()
+            };
+
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `chismesapp-backup-${Date.now()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            showNotification('Datos exportados exitosamente 📥');
+        }
+
+        function importData() {
+            const file = document.getElementById('importFile').files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+
+                    if (confirm('¿Deseas importar estos datos? Esto reemplazará tus datos actuales.')) {
+                        gossips = data.gossips || [];
+                        users = data.users || {};
+                        following = data.following || {};
+                        favorites = data.favorites || {};
+                        notifications = data.notifications || [];
+
+                        saveGossips();
+                        saveUsers();
+                        localStorage.setItem('following', JSON.stringify(following));
+                        localStorage.setItem('favorites', JSON.stringify(favorites));
+                        localStorage.setItem('notifications', JSON.stringify(notifications));
+
+                        showNotification('Datos importados exitosamente 📤');
+                        closeModal('settingsModal');
+                        updateUserStats();
+                        renderCurrentTab();
+                    }
+                } catch (error) {
+                    alert('Error al importar datos. Asegúrate de que el archivo sea válido.');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function clearAllData() {
+            if (confirm('¿ESTÁS SEGURO? Esto eliminará TODOS los datos de la aplicación. Esta acción no se puede deshacer.')) {
+                if (confirm('Última confirmación: ¿Realmente deseas borrar todo?')) {
+                    localStorage.clear();
+                    location.reload();
+                }
+            }
+        }
+
+        function updateUserStats() {
+            if (currentUser === 'Anónimo') {
+                document.getElementById('userKarma').textContent = '0';
+                document.getElementById('userPosts').textContent = '0';
+                document.getElementById('userFollowers').textContent = '0';
+                document.getElementById('userBadges').innerHTML = '';
+                document.getElementById('userLevel').textContent = '';
+                return;
+            }
+
+            const user = users[currentUser];
+            document.getElementById('userKarma').textContent = user.karma;
+            document.getElementById('userPosts').textContent = user.posts;
+            document.getElementById('userFollowers').textContent = user.followers || 0;
+
+            const level = getUserLevel(user.karma);
+            document.getElementById('userLevel').textContent = `(${level.name})`;
+
+            const badges = getUserBadges(user);
+            document.getElementById('userBadges').innerHTML = badges.map(b =>
+                `<span class="badge">${b}</span>`
+            ).join('');
+        }
+
+        function getUserLevel(karma) {
+            if (karma >= 1000) return { name: '🏆 Leyenda', level: 5 };
+            if (karma >= 500) return { name: '💎 Experto', level: 4 };
+            if (karma >= 200) return { name: '⭐ Veterano', level: 3 };
+            if (karma >= 50) return { name: '🔥 Chismoso', level: 2 };
+            return { name: '🌱 Novato', level: 1 };
+        }
+
+        function getUserBadges(user) {
+            const badges = [];
+
+            if (user.karma >= 1000) badges.push('🏆 Leyenda');
+            else if (user.karma >= 500) badges.push('💎 Experto');
+            else if (user.karma >= 200) badges.push('⭐ Veterano');
+            else if (user.karma >= 50) badges.push('🔥 Chismoso');
+            else badges.push('🌱 Novato');
+
+            if (user.posts >= 100) badges.push('📝 Escritor');
+            if (user.posts >= 50) badges.push('✍️ Prolífico');
+            if (user.comments >= 100) badges.push('💬 Conversador');
+            if (user.followers >= 50) badges.push('👥 Popular');
+            if (user.followers >= 100) badges.push('⭐ Influyente');
+
+            return badges;
+        }
+
+        function getPopularityScore(gossip) {
+            return (gossip.reactions.fire * 3) +
+                   (gossip.reactions.shocked * 2) +
+                   (gossip.reactions.laugh * 2) +
+                   (gossip.comments.length * 5) +
+                   (gossip.views * 0.1);
+        }
+
+        function getTrendingScore(gossip) {
+            const ageInHours = (Date.now() - new Date(gossip.timestamp)) / (1000 * 60 * 60);
+            const popularity = getPopularityScore(gossip);
+            return popularity / Math.pow(ageInHours + 2, 1.5);
         }
 
         function getTimeAgo(date) {
@@ -674,13 +2150,28 @@
             return `hace ${Math.floor(seconds / 86400)} días`;
         }
 
-        // Allow Enter key to submit
+        function saveGossips() {
+            localStorage.setItem('gossips', JSON.stringify(gossips));
+            localStorage.setItem('gossipIdCounter', gossipIdCounter);
+        }
+
+        function saveUsers() {
+            localStorage.setItem('users', JSON.stringify(users));
+        }
+
+        // Event listeners
         document.getElementById('usernameInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') setUsername();
         });
 
         document.getElementById('gossipContent').addEventListener('keypress', function(e) {
             if (e.key === 'Enter' && e.ctrlKey) postGossip();
+        });
+
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.remove('show');
+            }
         });
     </script>
 </body>
