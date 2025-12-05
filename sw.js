@@ -1,7 +1,8 @@
 const CACHE_NAME = 'chismesapp-v1';
 const urlsToCache = [
   '/',
-  '/index.html'
+  '/index.html',
+  '/manifest.json'
 ];
 
 // Instalación del Service Worker
@@ -10,7 +11,9 @@ self.addEventListener('install', event => {
     caches.open(CACHE_NAME)
       .then(cache => {
         console.log('Cache abierto');
-        return cache.addAll(urlsToCache);
+        return cache.addAll(urlsToCache).catch(err => {
+          console.error('Error al cachear archivos:', err);
+        });
       })
   );
   self.skipWaiting();
@@ -35,6 +38,16 @@ self.addEventListener('activate', event => {
 
 // Intercepción de peticiones
 self.addEventListener('fetch', event => {
+  // Ignorar peticiones que no son GET
+  if (event.request.method !== 'GET') {
+    return;
+  }
+
+  // Ignorar peticiones externas
+  if (!event.request.url.startsWith(self.location.origin)) {
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request)
       .then(response => {
@@ -43,22 +56,29 @@ self.addEventListener('fetch', event => {
           return response;
         }
 
-        return fetch(event.request).then(response => {
-          // Verificar si recibimos una respuesta válida
-          if (!response || response.status !== 200 || response.type !== 'basic') {
+        return fetch(event.request)
+          .then(response => {
+            // Verificar si recibimos una respuesta válida
+            if (!response || response.status !== 200) {
+              return response;
+            }
+
+            // Solo cachear respuestas exitosas
+            if (response.type === 'basic' || response.type === 'cors') {
+              const responseToCache = response.clone();
+              caches.open(CACHE_NAME)
+                .then(cache => {
+                  cache.put(event.request, responseToCache);
+                });
+            }
+
             return response;
-          }
-
-          // Clonar la respuesta
-          const responseToCache = response.clone();
-
-          caches.open(CACHE_NAME)
-            .then(cache => {
-              cache.put(event.request, responseToCache);
-            });
-
-          return response;
-        });
+          })
+          .catch(error => {
+            console.error('Error al hacer fetch:', error);
+            // Devolver página en caché si existe
+            return caches.match('/index.html');
+          });
       })
   );
 });
