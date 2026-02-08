@@ -3,135 +3,480 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog de Simón Franco</title>
+    <title>Formulario I-485 interactivo</title>
     <style>
-        /* General styles */
+        :root {
+            --primary: #2c7be5;
+            --primary-dark: #1a5bb8;
+            --accent: #16a085;
+            --bg: #f5f7fb;
+            --card: #ffffff;
+            --text: #1f2d3d;
+            --muted: #6b7b93;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
-            background-color: #f4f4f9;
-            color: #333;
+            font-family: 'Inter', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
         }
+
         header {
-            background-color: #4CAF50;
-            color: white;
-            padding: 1rem 0;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+            padding: 2.5rem 1.5rem 3rem;
             text-align: center;
+            box-shadow: 0 10px 30px rgba(44, 123, 229, 0.3);
         }
+
+        header h1 {
+            margin: 0 0 0.5rem;
+            font-size: 2.4rem;
+            letter-spacing: -0.02em;
+        }
+
+        header p {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.05rem;
+        }
+
         nav {
-            background-color: #333;
             display: flex;
             justify-content: center;
-            padding: 0.5rem 0;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
         }
+
         nav a {
-            color: white;
-            margin: 0 1rem;
+            color: #fff;
             text-decoration: none;
-            font-weight: bold;
+            padding: 0.6rem 1.1rem;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+            transition: all 0.2s ease;
         }
+
         nav a:hover {
-            text-decoration: underline;
+            background: rgba(255, 255, 255, 0.18);
+            transform: translateY(-1px);
         }
-        .container {
+
+        main {
             max-width: 1200px;
-            margin: 2rem auto;
-            padding: 1rem;
+            margin: -50px auto 3rem;
+            padding: 0 1.5rem;
         }
-        h1, h2 {
-            text-align: center;
-            color: #4CAF50;
-        }
-        .blog-post {
-            background: white;
-            margin-bottom: 2rem;
+
+        .card {
+            background: var(--card);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(31, 45, 61, 0.08);
             padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
         }
-        .blog-post h3 {
+
+        .grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin: 0 0 1rem;
+            color: var(--primary-dark);
+            letter-spacing: -0.01em;
+        }
+
+        .section-title span {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            background: rgba(44, 123, 229, 0.15);
+            color: var(--primary-dark);
+            font-weight: 700;
+        }
+
+        form {
+            display: grid;
+            gap: 1rem;
+        }
+
+        label {
+            font-weight: 600;
+            color: var(--text);
+            display: block;
+            margin-bottom: 0.35rem;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.85rem 0.95rem;
+            border-radius: 10px;
+            border: 1px solid #d9e2ef;
+            background: #fdfefe;
+            font-size: 0.98rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(44, 123, 229, 0.18);
+            outline: none;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.35rem 0.65rem;
+            background: rgba(22, 160, 133, 0.12);
+            color: var(--accent);
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        button {
+            border: none;
+            border-radius: 10px;
+            padding: 0.85rem 1.3rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+            box-shadow: 0 6px 18px rgba(44, 123, 229, 0.25);
+        }
+
+        .btn-secondary {
+            background: #e6ecf5;
+            color: var(--text);
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .stepper {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .step {
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            background: #eef3fb;
+            color: var(--muted);
+            border: 1px solid #d7e3f8;
+        }
+
+        .step.active {
+            background: rgba(44, 123, 229, 0.12);
+            color: var(--primary-dark);
+            border-color: rgba(44, 123, 229, 0.4);
+            font-weight: 700;
+        }
+
+        .summary {
+            background: #0b172a;
+            color: #e5ecff;
+            border-radius: 16px;
+            padding: 1.25rem;
+        }
+
+        .summary h3 {
             margin-top: 0;
         }
-        .blog-post p {
-            line-height: 1.6;
+
+        .summary .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.35rem 1rem;
+            font-size: 0.95rem;
         }
+
+        .summary .label {
+            color: #9fb4d8;
+        }
+
         footer {
-            background-color: #333;
-            color: white;
             text-align: center;
-            padding: 1rem 0;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
+            padding: 2rem 1rem 3rem;
+            color: var(--muted);
+            font-size: 0.95rem;
         }
-        form {
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        form input, form textarea, form button {
-            width: 100%;
-            margin-bottom: 1rem;
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        form button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        form button:hover {
-            background-color: #45a049;
+
+        @media (max-width: 720px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .summary .row {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Bienvenido al Blog de Simón Franco</h1>
-        <p>Un espacio para compartir ideas sobre la microbiota, nutrición, y salud mental.</p>
+        <h1>Formulario I-485 interactivo</h1>
+        <p>Completa los datos clave de la solicitud de ajuste de estatus con asistencia contextual y validación en vivo.</p>
+        <nav>
+            <a href="#intro">Guía</a>
+            <a href="#formulario">Formulario</a>
+            <a href="#resumen">Resumen</a>
+        </nav>
     </header>
-    <nav>
-        <a href="#posts">Publicaciones</a>
-        <a href="#about">Sobre Mí</a>
-        <a href="#contact">Contacto</a>
-    </nav>
-    <div class="container">
-        <section id="posts">
-            <h2>Últimas Publicaciones</h2>
-            <article class="blog-post">
-                <h3>Cómo la microbiota impacta en la salud mental</h3>
-                <p>La microbiota intestinal tiene un rol crucial en nuestra salud mental y física. En este artículo exploramos cómo...</p>
-                <a href="#">Leer más</a>
-            </article>
-            <article class="blog-post">
-                <h3>10 alimentos que favorecen la microbiota</h3>
-                <p>Descubre cómo una dieta equilibrada puede ayudar a mantener tu microbiota en óptimas condiciones...</p>
-                <a href="#">Leer más</a>
-            </article>
+
+    <main>
+        <section id="intro" class="card">
+            <h2 class="section-title"><span>?</span>¿Qué es el I-485</h2>
+            <p>
+                El Formulario I-485 sirve para solicitar la residencia permanente (Green Card) desde dentro de Estados Unidos.
+                Esta versión interactiva te guía por las secciones básicas: información personal, elegibilidad y datos de contacto.
+            </p>
+            <div class="grid grid-2">
+                <div>
+                    <div class="chip">Consejo rápido</div>
+                    <p>Ten a la mano tu pasaporte, I-94 y documentación de elegibilidad para agilizar el llenado.</p>
+                </div>
+                <div>
+                    <div class="chip">Privacidad</div>
+                    <p>Los datos ingresados no se envían a ningún servidor; permanecen en tu navegador mientras llenas el formulario.</p>
+                </div>
+            </div>
         </section>
-        <section id="about">
-            <h2>Sobre Mí</h2>
-            <p>Soy Simón Franco, psicólogo y analista de conducta especializado en nutrición y microbiota. Me apasiona explorar la relación entre la salud física, mental y los avances en medicina funcional. Este blog es un espacio para compartir ideas y aprender juntos.</p>
-        </section>
-        <section id="contact">
-            <h2>Contacto</h2>
-            <form>
-                <label for="name">Nombre</label>
-                <input type="text" id="name" name="name" placeholder="Tu nombre" required>
-                <label for="email">Correo Electrónico</label>
-                <input type="email" id="email" name="email" placeholder="Tu correo electrónico" required>
-                <label for="message">Mensaje</label>
-                <textarea id="message" name="message" placeholder="Escribe tu mensaje aquí..." rows="5" required></textarea>
-                <button type="submit">Enviar</button>
+
+        <section id="formulario" class="card">
+            <div class="stepper">
+                <div class="step active" data-step="1">1. Datos personales</div>
+                <div class="step" data-step="2">2. Elegibilidad</div>
+                <div class="step" data-step="3">3. Contacto y envío</div>
+            </div>
+
+            <form id="i485-form">
+                <div class="section" data-section="1">
+                    <h2 class="section-title"><span>1</span>Datos personales</h2>
+                    <div class="grid grid-2">
+                        <div>
+                            <label for="nombre">Nombre completo</label>
+                            <input id="nombre" name="nombre" type="text" placeholder="Ej. Ana María López" required>
+                        </div>
+                        <div>
+                            <label for="nacimiento">Fecha de nacimiento</label>
+                            <input id="nacimiento" name="nacimiento" type="date" required>
+                        </div>
+                        <div>
+                            <label for="pais">País de nacimiento</label>
+                            <input id="pais" name="pais" type="text" placeholder="Ej. Colombia" required>
+                        </div>
+                        <div>
+                            <label for="numeroA">Número A (si aplica)</label>
+                            <input id="numeroA" name="numeroA" type="text" placeholder="A-123456789">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section" data-section="2" hidden>
+                    <h2 class="section-title"><span>2</span>Motivo de elegibilidad</h2>
+                    <div class="grid grid-2">
+                        <div>
+                            <label for="categoria">Categoría de ajuste</label>
+                            <select id="categoria" name="categoria" required>
+                                <option value="">Selecciona una opción</option>
+                                <option>Familiar inmediato</option>
+                                <option>Empleo</option>
+                                <option>Asilo o refugiado</option>
+                                <option>Diversidad (lotería)</option>
+                                <option>Otro (especificar)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="otro">Si elegiste "Otro", describe</label>
+                            <input id="otro" name="otro" type="text" placeholder="Breve descripción" disabled>
+                        </div>
+                        <div>
+                            <label for="entrada">Fecha de última entrada a EE.UU.</label>
+                            <input id="entrada" name="entrada" type="date" required>
+                        </div>
+                        <div>
+                            <label for="i94">Número de admisión I-94</label>
+                            <input id="i94" name="i94" type="text" placeholder="Ej. 123456789" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section" data-section="3" hidden>
+                    <h2 class="section-title"><span>3</span>Contacto y confirmación</h2>
+                    <div class="grid grid-2">
+                        <div>
+                            <label for="direccion">Dirección postal en EE.UU.</label>
+                            <textarea id="direccion" name="direccion" placeholder="Calle, ciudad, estado, ZIP" required></textarea>
+                        </div>
+                        <div>
+                            <label for="telefono">Teléfono</label>
+                            <input id="telefono" name="telefono" type="tel" placeholder="Ej. +1 555 123 4567" required>
+                        </div>
+                        <div>
+                            <label for="correo">Correo electrónico</label>
+                            <input id="correo" name="correo" type="email" placeholder="nombre@correo.com" required>
+                        </div>
+                        <div>
+                            <label for="firma">Firma electrónica</label>
+                            <input id="firma" name="firma" type="text" placeholder="Escribe tu nombre completo" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button type="button" class="btn-secondary" id="prev" disabled>Anterior</button>
+                    <button type="button" class="btn-primary" id="next">Siguiente</button>
+                    <button type="submit" class="btn-primary" id="submit" hidden>Generar resumen</button>
+                </div>
             </form>
         </section>
-    </div>
+
+        <section id="resumen" class="card summary" aria-live="polite">
+            <h3>Resumen previo al envío</h3>
+            <p class="chip">Se actualizará automáticamente a medida que completes cada paso.</p>
+            <div class="row" id="summary-grid">
+                <div class="label">Nombre:</div><div>-</div>
+                <div class="label">Nacimiento:</div><div>-</div>
+                <div class="label">País:</div><div>-</div>
+                <div class="label">Número A:</div><div>-</div>
+                <div class="label">Categoría:</div><div>-</div>
+                <div class="label">Otro:</div><div>-</div>
+                <div class="label">Entrada:</div><div>-</div>
+                <div class="label">I-94:</div><div>-</div>
+                <div class="label">Dirección:</div><div>-</div>
+                <div class="label">Teléfono:</div><div>-</div>
+                <div class="label">Correo:</div><div>-</div>
+                <div class="label">Firma:</div><div>-</div>
+            </div>
+        </section>
+    </main>
+
     <footer>
-        <p>© 2024 Simón Franco | Todos los derechos reservados</p>
+        Esta página es una guía interactiva de práctica y no reemplaza las instrucciones oficiales del Formulario I-485.
     </footer>
+
+    <script>
+        const form = document.getElementById('i485-form');
+        const steps = Array.from(document.querySelectorAll('.step'));
+        const sections = Array.from(document.querySelectorAll('.section'));
+        const nextBtn = document.getElementById('next');
+        const prevBtn = document.getElementById('prev');
+        const submitBtn = document.getElementById('submit');
+        const summaryGrid = document.getElementById('summary-grid');
+        let current = 0;
+
+        function updateStep(direction) {
+            sections[current].hidden = true;
+            steps[current].classList.remove('active');
+            current = Math.max(0, Math.min(sections.length - 1, current + direction));
+            sections[current].hidden = false;
+            steps[current].classList.add('active');
+            prevBtn.disabled = current === 0;
+            nextBtn.hidden = current === sections.length - 1;
+            submitBtn.hidden = current !== sections.length - 1;
+        }
+
+        function syncOtherCategory() {
+            const categoria = document.getElementById('categoria');
+            const otro = document.getElementById('otro');
+            const isOther = categoria.value === 'Otro (especificar)';
+            otro.disabled = !isOther;
+            if (!isOther) {
+                otro.value = '';
+            }
+        }
+
+        function updateSummary() {
+            const entries = {
+                'Nombre': form.nombre.value,
+                'Nacimiento': form.nacimiento.value,
+                'País': form.pais.value,
+                'Número A': form.numeroA.value,
+                'Categoría': form.categoria.value,
+                'Otro': form.otro.value,
+                'Entrada': form.entrada.value,
+                'I-94': form.i94.value,
+                'Dirección': form.direccion.value,
+                'Teléfono': form.telefono.value,
+                'Correo': form.correo.value,
+                'Firma': form.firma.value,
+            };
+
+            summaryGrid.innerHTML = Object.entries(entries)
+                .map(([label, value]) => `<div class="label">${label}:</div><div>${value || '-'}</div>`)
+                .join('');
+        }
+
+        form.addEventListener('input', () => {
+            syncOtherCategory();
+            updateSummary();
+        });
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            if (!form.reportValidity()) return;
+            updateSummary();
+            alert('Resumen generado. Revisa los datos antes de presentar el formulario oficial.');
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (sections[current].querySelectorAll('input, select, textarea').length && !form.reportValidity()) {
+                return;
+            }
+            updateStep(1);
+        });
+
+        prevBtn.addEventListener('click', () => updateStep(-1));
+
+        document.getElementById('categoria').addEventListener('change', syncOtherCategory);
+
+        updateSummary();
+    </script>
 </body>
 </html>
